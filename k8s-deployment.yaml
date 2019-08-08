@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: watch-manager
+  labels:
+      app: watch-manager 
+      phase: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: watch-manager
+  template:
+    metadata:
+      labels:
+        app: watch-manager
+        tier: backend
+        phase: test
+    spec:
+      containers:
+      - name: watch-manager-container
+        image: boomzero/night-watch:watch-manager
+        ports:
+        - containerPort: 3000
+        imagePullPolicy: Always
+        env:
+        - name: NODE_ENV
+          value: "development"
+        - name: PORT
+          value: "3000"
+        - name: SCHEDULER_ADDRESS
+          value: "scheduler:3010"
+
